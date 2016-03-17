@@ -1,6 +1,7 @@
 <style>
 	.good{
 		color:green;
+		;
 		font-weight: 600;
 	}
 
