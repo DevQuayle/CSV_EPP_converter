@@ -38,7 +38,10 @@ try{
     exit();
 }
 
-
+// echo "<pre>";
+// var_dump($explode);
+// echo "</pre>";
+// exit();
 
 $begining = '[INFO]
 "1.05",3,1250,"Subiekt GT","Elkomp","Elkomp 2016","Elkomp Jacek K¹dzio³ka","Limanowa","34-600","Krótka  12","737-175-79-65","1","Sklep ul. Krótka 12",,,1,20160311114455,20160311114455,"Œliwa  Dawid",20160311114456,"Polska","PL","PL 7371757965",1
@@ -58,10 +61,10 @@ try{
 		$code = str_replace("\n", "",$explode[$i][6]);
 		
 		$firstContent .= '
-'.$i.',1,'.$code.',1,0,0,0,0.0000,0.0000,"szt.",'.$explode[$i][1].',,,'.$explode[$i][2].',,23.0000,,,,,,';
+'.$i.',1,"'.$code.'",1,0,0,1,0.0000,0.0000,"szt",'.$explode[$i][1].','.$explode[$i][1].','.$explode[$i][2].',,,23.0000,,,,,,';
 
 		$secondContent .= '
-1,"'.$code.'",,"'.$code.'","'.$explode[$i][0].'",,"'.$explode[$i][0].'"';
+1,"'.$code.'",,"'.$code.'","'.$explode[$i][0].'",,"'.$explode[$i][0].'","'.$explode[$i][0].'",,"szt.","23",0,"23",0,0,0.0000,"szt.",0,"PLN",,,0.0000,0,,,0,"szt.",0.0000,0.0000,,0,,0,0,,,,,,,,';
 	}
 	echo "<div class='good'>OK: Dane zostały poprawnie przetworzone.  </div>";
 }catch (Exception $e) {
