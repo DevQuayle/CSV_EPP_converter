@@ -12,8 +12,24 @@
 
 
 <?php
-header('Content-Type: text/html; charset=CP852');
+header('Content-Type: text/html; charset=UTF-8');
 //header("Content-Type: text/html; charset=windows-1250");	
+
+
+function win2utf(){
+  $tabela = Array(
+    "\xb9" => "\xc4\x85", "\xa5" => "\xc4\x84", "\xe6" => "\xc4\x87", "\xc6" => "\xc4\x86",
+    "\xea" => "\xc4\x99", "\xca" => "\xc4\x98", "\xb3" => "\xc5\x82", "\xa3" => "\xc5\x81",
+    "\xf3" => "\xc3\xb3", "\xd3" => "\xc3\x93", "\x9c" => "\xc5\x9b", "\x8c" => "\xc5\x9a",
+    "\x9f" => "\xc5\xba", "\xaf" => "\xc5\xbb", "\xbf" => "\xc5\xbc", "\xac" => "\xc5\xb9",
+    "\xf1" => "\xc5\x84", "\xd1" => "\xc5\x83", "\x8f" => "\xc5\xb9");
+   return $tabela;
+  }
+
+  function UTF8_2_WIN1250($tekst){
+   return strtr($tekst, array_flip(win2utf()));
+  }
+
 try{
 	$lines = file('plik.csv');
 	
@@ -86,9 +102,8 @@ $litleContent ='
 
 
 $fullContent = $begining.$firstContent.$litleContent.$secondContent."\n";
-//$fullContent = iconv(mb_detect_encoding($fullContent), "ISO-8859-2//TRANSLIT", $fullContent);
 
-//$fullContent = htmlentities($fullContent, ENT_COMPAT, "CP852");
+$fullContent = UTF8_2_WIN1250($fullContent);
 
 try {
 	$fp = fopen("plik.epp", "w");
