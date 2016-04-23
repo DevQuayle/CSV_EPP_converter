@@ -1,120 +1,56 @@
-<style>
-	.good{
-		color:green;
-		font-weight: 600;
-	}
-
-	.err{
-		color:red;
-		font-weight: 600;
-	}
-</style>
-
-
 <?php
-header('Content-Type: text/html; charset=UTF-8');
-//header("Content-Type: text/html; charset=windows-1250");	
-
-
-function win2utf(){
-  $tabela = Array(
-    "\xb9" => "\xc4\x85", "\xa5" => "\xc4\x84", "\xe6" => "\xc4\x87", "\xc6" => "\xc4\x86",
-    "\xea" => "\xc4\x99", "\xca" => "\xc4\x98", "\xb3" => "\xc5\x82", "\xa3" => "\xc5\x81",
-    "\xf3" => "\xc3\xb3", "\xd3" => "\xc3\x93", "\x9c" => "\xc5\x9b", "\x8c" => "\xc5\x9a",
-    "\x9f" => "\xc5\xba", "\xaf" => "\xc5\xbb", "\xbf" => "\xc5\xbc", "\xac" => "\xc5\xb9",
-    "\xf1" => "\xc5\x84", "\xd1" => "\xc5\x83", "\x8f" => "\xc5\xb9");
-   return $tabela;
-  }
-
-  function UTF8_2_WIN1250($tekst){
-   return strtr($tekst, array_flip(win2utf()));
-  }
-
-try{
-	$lines = file('plik.csv');
-	
-	foreach ($lines as $line_num => $line) {
-	    $fileContent[] = htmlspecialchars($line);
-	}
-	echo "<div class='good'>OK: Plik wczytany poprawnie.  </div>";
-}catch (Exception $e) {
-	echo "<div class='err'>ERR: Błąd podczas wczytywania pliku. </div>";
-    echo 'Caught exception: ',  $e->getMessage(), "\n";
-    exit();
-}
-
-
-try{
-	for ($i=0; $i <count($fileContent) ; $i++) { 
-		$explode[]=explode(';', $fileContent[$i]);
-	}
-	echo "<div class='good'>OK: Konwersja pliku do tablicy zakończona pomyślnie.  </div>";
-}catch (Exception $e) {
-	echo "<div class='err'>ERR: Błąd podczas konwersji pliku na tablicę</div>";
-    echo 'Caught exception: ',  $e->getMessage(), "\n";
-    exit();
-}
-
-// echo "<pre>";
-// var_dump($explode);
-// echo "</pre>";
-// exit();
-
-
-$begining = '[INFO]
-"1.05",3,1250,"Subiekt GT","Elkomp","Elkomp 2016","Elkomp Jacek Kądziołka","Limanowa","34-600","Krótka  12","737-175-79-65","1","Sklep ul. Krótka 12",,,1,20160311114455,20160311114455,"Śliwa  Dawid",20160311114456,"Polska","PL","PL 7371757965",1
-
-[NAGLOWEK]
-"FZ",,,,,,,,,,,"9451981163","TOPTEL ANNA I WIKTOR WOŁKOWICZ SPÓŁKA JA","TOPTEL ANNA I WIKTOR WO£KOWICZ SPÓŁKA JAWNA","Kraków","31-221","Białoprądnicka 15A","9451981163","Zakup","Zakup towarów lub usług","Kraków",20160309000000,20160309000000,20160309000000,30,1,"Cena ostatniej dost.",,,,,,,,,,,0,0,1,3,,,,0.0000,0.0000,"PLN",1.0000,,,,,0,0,0,,0.0000,,0.0000,"Polska","PL",0
-
-[ZAWARTOSC]';
-
-
-
-$firstContent = '';
-$secondContent = '';
-
-try{
-	for ($i=1; $i < count($explode) ; $i++) { 
-		//$code = str_replace("\n\r", "",$explode[$i][6]);
-		$code = str_replace(array("\r", "\n"), '', $explode[$i][6]);
-		$firstContent .= '
-'.$i.',1,"'.$code.'",1,0,0,1,0.0000,0.0000,"szt",'.$explode[$i][1].','.$explode[$i][1].','.$explode[$i][2].',,,23.0000,,,,,,';
-
-		$secondContent .= '
-1,"'.$code.'",,"'.$code.'","'.$explode[$i][0].'","'.$explode[$i][0].'","'.$explode[$i][0].'",,,"szt.","23",0,"23",0,0,0.0000,"szt.",0,"PLN",,,0.0000,0,,,0,"szt.",0.0000,0.0000,,0,,0,0,,,,,,,,';
-	}
-	echo "<div class='good'>OK: Dane zostały poprawnie przetworzone.  </div>";
-}catch (Exception $e) {
-	echo "<div class='err'>ERR: Błąd podczas przetwarzania danych. </div>";
-    echo 'Caught exception: ',  $e->getMessage(), "\n";
-    exit();
-}
-
-
-
-$litleContent ='
-
-[NAGLOWEK]
-"TOWARY"
-
-[ZAWARTOSC]';
-
-
-$fullContent = $begining.$firstContent.$litleContent.$secondContent."\n";
-
-$fullContent = UTF8_2_WIN1250($fullContent);
-
-try {
-	$fp = fopen("plik.epp", "w");
-	fputs($fp, $fullContent);
-	fclose($fp);
-	echo "<div class='good'>OK: Plik został poprawnie zapisany.  </div>";
-} catch (Exception $e) {
-	echo "<div class='err'>ERR: Błąd podczas zapisu danych do pliku. </div>";
-    echo 'Caught exception: ',  $e->getMessage(), "\n";
-    exit();
-}
-
+    session_start();
+    require_once "convert.class.php";
 ?>
+    <!DOCTYPE html>
+    <html>
 
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>CSV to EPP concerter</title>
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+
+        <script src="assets/js/jquery-1.12.3.min.js"></script>
+        <script src="assets/js/jquery.steps.min.js"></script>
+        <script src="assets/js/main.js"></script>
+        <script src="assets/js/dropzone.js"></script>
+        <script src="assets/js/sweetalert.min.js"></script>
+
+        <link rel="stylesheet" href="assets/css/sweetalert.css">
+        <link rel="stylesheet" href="assets/css/steps.css">
+        <link rel="stylesheet" href="assets/css/style.css">
+    </head>
+
+    <body>
+        <div class="title">CVS to EPP converter</div>
+        <div id="example-basic">
+            <h3> Dodaj plik do konwersji</h3>
+            <section>
+                <form id="myDropzone" class="dropzone"></form>
+            </section>
+            <h3>Konwersja</h3>
+            <section>
+                <div id="test">
+                    <?php
+                    if (isset($_POST['fileName']) && !empty($_POST['fileName']))
+                    {
+                        $thread = str_replace('"', '', $_POST['fileName']);
+                        convert($thread);
+                        $_POST['fileDownload'] = $_POST['fileName'];
+                        $_POST['fileName'] = null;
+                    }
+                    ?>
+                </div>
+            </section>
+            <h3>Pobierz gotowy plik</h3>
+            <section class="last">
+            <img src="assets/img/download.png" alt="download">
+            <div class="arrow bounce"></div>
+            </section>
+        </div>
+    </body>
+
+    </html>

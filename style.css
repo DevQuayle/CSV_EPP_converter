@@ -1,0 +1,20 @@
+@import url('//cdnjs.cloudflare.com/ajax/libs/dropzone/3.8.4/css/dropzone.css');
+
+
+.good {
+     color: green;
+     font-weight: 600;
+ }
+
+ .err {
+     color: red;
+     font-weight: 600;
+ }
+
+.dropzone{
+    width: 40vw;
+    border: 3px #1c92e8;
+    border-style: dashed;
+    margin: 0 auto;
+}
+
