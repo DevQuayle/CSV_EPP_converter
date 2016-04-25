@@ -19,7 +19,7 @@ function win2utf(){
   }
 
 
-function convert( $filePath = 's' ){
+function convert( $filePath = 's', $output = 'o' ){
 
 //    echo "<pre>";
 //    print_r($filePath);
@@ -106,8 +106,10 @@ function convert( $filePath = 's' ){
 
     $fullContent = UTF8_2_WIN1250($fullContent);
 
+
+
     try {
-        $fp = fopen("plik.epp", "w");
+        $fp = fopen($output, "w");
         fputs($fp, $fullContent);
         fclose($fp);
         echo "<div class='good'>OK: Plik został poprawnie zapisany.  </div>";

@@ -37,12 +37,16 @@
                     <?php
                     if (isset($_POST['fileName']) && !empty($_POST['fileName']))
                     {
-                        $thread = str_replace('"', '', $_POST['fileName']);
-                        convert($thread);
+                        $input = "uploads/".str_replace('"', '', $_POST['fileName']);
+                        $_SESSION['fileDownload'] =  $output = "outputs/".preg_replace('/\\.[^.\\s]{3,4}$/', '', str_replace('"', '', $_POST['fileName'])).".epp";
+
+                        convert($input,$output);
                         $_POST['fileDownload'] = $_POST['fileName'];
                         $_POST['fileName'] = null;
                     }
                     ?>
+
+
                 </div>
             </section>
             <h3>Pobierz gotowy plik</h3>

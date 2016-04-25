@@ -36,6 +36,10 @@ const App = {
                     return true;
                 }
             },
+            onFinishing: function(){
+               window.location.replace("download.php");
+                return true;
+            },
             labels: {
 
                 next: "Następny",
@@ -87,6 +91,7 @@ const App = {
                 }
             },
             reset: function () {
+
                 $.ajax({
                     url: "index.php",
                     type: 'POST',
