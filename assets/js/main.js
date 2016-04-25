@@ -99,6 +99,7 @@ const App = {
                         fileName: null,
                     },
                     success: function (result) {
+                        $('#myDropzone').toggleClass('dz-started');
                         App.sendingFile = false;
                     }
                 });
