@@ -9,6 +9,7 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
         <title>CSV to EPP concerter</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
 
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width">
@@ -51,8 +52,8 @@
             </section>
             <h3>Pobierz gotowy plik</h3>
             <section class="last">
-            <img src="assets/img/download.png" alt="download">
-            <div class="arrow bounce"></div>
+                <img src="assets/img/download.png" alt="download">
+                <div class="arrow bounce"></div>
             </section>
         </div>
     </body>

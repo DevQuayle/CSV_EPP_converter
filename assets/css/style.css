@@ -142,3 +142,18 @@ body {
 .wizard > .steps > ul > li {
     width: 33.333%;
 }
+
+@media all and (max-width:500px) {
+    .wizard > .steps > ul > li {
+        width: 100% !important;
+    }
+
+    .wizard > .actions > ul{
+        width: 97%;
+    }
+    .wizard > .actions > ul > li{
+        width: 49%;
+        text-align: center;
+        margin: 0;
+    }
+}
