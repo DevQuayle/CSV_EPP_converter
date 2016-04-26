@@ -114,11 +114,11 @@ return $var;
 }
 
     $fullContent = $begining.$firstContent.$litleContent.$secondContent."\n";
-    //$fullContent = str_replace('"', '', $fullContent);
 
-    //$fullContent = UTF8_2_WIN1250($fullContent);
+    $fullContent = UTF8_2_WIN1250($fullContent);
 
-    //$fullContent = csv_encode_conv($fullContent,"Windows-1252");
+    //UNIX to DOS convert
+    $fullContent = preg_replace('~(*BSR_ANYCRLF)\R~', "\r\n", $fullContent);
 
 
     try {
