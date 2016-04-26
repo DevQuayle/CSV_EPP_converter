@@ -27,6 +27,8 @@ function convert( $filePath = 's', $output = 'o' ){
 
     try{
         $lines = file($filePath);
+        $lines = str_replace('"', '', $lines);
+
         if(!isset($lines))  throw new Exception('<div class="err">ERR: Błąd podczas wczytywania pliku. </div>');
 
         if(empty($lines))  throw new Exception('<div class="err">ERR: Plik jest pusty. </div>');
@@ -34,6 +36,7 @@ function convert( $filePath = 's', $output = 'o' ){
         foreach ($lines as $line_num => $line) {
             $fileContent[] = htmlspecialchars($line);
         }
+
 
         echo "<div class='good'>OK: Plik wczytany poprawnie.  </div>";
     }catch (Exception $e) {
@@ -45,9 +48,10 @@ function convert( $filePath = 's', $output = 'o' ){
     try{
 
         for ($i=0; $i <count($fileContent) ; $i++) {
-            $explode[]=explode(';', $fileContent[$i]);
-        }
 
+            $explode[]=explode(';', $fileContent[$i]);
+
+        }
         if(!$explode) throw new Exception( "<div class='err'>ERR: Błąd podczas konwersji pliku na tablicę</div>");
 
         echo "<div class='good'>OK: Konwersja pliku do tablicy zakończona pomyślnie.  </div>";
@@ -60,8 +64,6 @@ function convert( $filePath = 's', $output = 'o' ){
     // var_dump($explode);
     // echo "</pre>";
     // exit();
-
-
     $begining = '[INFO]
     "1.05",3,1250,"Subiekt GT","Elkomp","Elkomp 2016","Elkomp Jacek Kądziołka","Limanowa","34-600","Krótka  12","737-175-79-65","1","Sklep ul. Krótka 12",,,1,20160311114455,20160311114455,"Śliwa  Dawid",20160311114456,"Polska","PL","PL 7371757965",1
 
@@ -79,12 +81,16 @@ function convert( $filePath = 's', $output = 'o' ){
         for ($i=1; $i < count($explode) ; $i++) {
             //$code = str_replace("\n\r", "",$explode[$i][6]);
             $code = str_replace(array("\r", "\n"), '', $explode[$i][6]);
+
+
+
             $firstContent .= '
             '.$i.',1,"'.$code.'",1,0,0,1,0.0000,0.0000,"szt",'.$explode[$i][1].','.$explode[$i][1].','.$explode[$i][2].',,,23.0000,,,,,,';
 
             $secondContent .= '
             1,"'.$code.'",,"'.$code.'","'.$explode[$i][0].'","'.$explode[$i][0].'","'.$explode[$i][0].'",,,"szt.","23",0,"23",0,0,0.0000,"szt.",0,"PLN",,,0.0000,0,,,0,"szt.",0.0000,0.0000,,0,,0,0,,,,,,,,';
         }
+       // exit();
         if ($firstContent == '' || $secondContent == '') throw new Exception("<div class='err'>ERR: Błąd podczas przetwarzania danych. </div>");
         echo "<div class='good'>OK: Dane zostały poprawnie przetworzone.  </div>";
     }catch (Exception $e) {
@@ -101,11 +107,18 @@ function convert( $filePath = 's', $output = 'o' ){
 
     [ZAWARTOSC]';
 
+function csv_encode_conv($var, $enc='Windows-1252') {
+$var = htmlentities($var, ENT_QUOTES, 'utf-8');
+$var = html_entity_decode($var, ENT_QUOTES , $enc);
+return $var;
+}
 
     $fullContent = $begining.$firstContent.$litleContent.$secondContent."\n";
+    //$fullContent = str_replace('"', '', $fullContent);
 
-    $fullContent = UTF8_2_WIN1250($fullContent);
+    //$fullContent = UTF8_2_WIN1250($fullContent);
 
+    //$fullContent = csv_encode_conv($fullContent,"Windows-1252");
 
 
     try {
